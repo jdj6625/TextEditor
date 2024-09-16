@@ -1,12 +1,12 @@
-use std::fs::{File, OpenOptions};
-use std::io::{read_to_string, Read};
+use std::fs::OpenOptions;
+use std::io::Read;
 struct TextDocument<'a> {
     init_buffer: bool,
-    data: String,
+    line_buffer: Vec<&'a str>,
     length: usize,
 }
 
-impl TextDocument{
+impl TextDocument {
     // Constructor
     fn init(&mut self, file_name: &str) -> std::io::Result<()>
     {
@@ -14,15 +14,19 @@ impl TextDocument{
             .read(true)
             .write(true)
             .create(true)
-            .open(file_name);
-        file.read_to_string(&mut self.data)?;
+            .open(file_name)?;
+        let mut data: String = String::new();
+        file.read_to_string(&mut data)?;
+        let lines = data.lines();
+        for line in lines
+        {
+            self.line_buffer.push(line)
+        }
+        self.length = self.line_buffer.len();
         Ok(())
     }
-    fn get_line<'a>(line_number: usize, char_buffer: &'a char, line_length: usize) -> u64{
-        line
-    }
-    fn line_count(){
 
+    fn get_line<'a>(&self, line_number: usize) -> &'a str {
+        self.line_buffer[line_number]
     }
-
 }
