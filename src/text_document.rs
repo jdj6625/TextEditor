@@ -7,6 +7,7 @@ struct TextDocument<'a> {
 }
 
 impl TextDocument{
+    // Constructor
     fn init(&mut self, file_name: &str) -> std::io::Result<()>
     {
         let mut file = OpenOptions::new()
