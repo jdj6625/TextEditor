@@ -3,4 +3,6 @@ name = "TextEditor"
 version = "0.1.0"
 edition = "2021"
 
+
 [dependencies]
+iced = {version = "0.12.1"}
