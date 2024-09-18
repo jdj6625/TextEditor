@@ -4,6 +4,7 @@ use std::io::Read;
 pub struct TextDocument {
     pub(crate) line_buffer: Vec<String>,
     pub(crate) length: usize,
+    pub(crate) character: char,
 }
 
 impl TextDocument {

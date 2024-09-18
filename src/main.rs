@@ -1,12 +1,12 @@
 mod text_document;
 
 use iced::{Element, Sandbox, Settings, Theme, Length, alignment};
-use iced::widget::{container, text, Column, column};
+use iced::widget::{container, text, Column, column, scrollable, text_input};
 use crate::text_document::TextDocument;
 
 #[derive(Debug, Clone)]
 pub enum Message {
-    Input,
+    KeyPress(char),
     File,
     Scroll
 }
@@ -15,7 +15,7 @@ impl Sandbox for TextDocument {
     type Message = Message;
 
     fn new() -> TextDocument {
-        TextDocument {line_buffer: Vec::new(), length: 0}
+        TextDocument {line_buffer: Vec::new(), length: 0, character: 'a'}
     }
     fn title(&self) -> String {
         String::from("TextEditor")
@@ -25,7 +25,8 @@ impl Sandbox for TextDocument {
     }
     fn view(&self) -> Element<'_, Self::Message> {
         container(
-            paint_text(&self.line_buffer),
+            column!((&self.line_buffer),
+            text_input(&self.character))
         )
             .height(Length::Fill)
             .width(Length::Fill)
@@ -44,10 +45,15 @@ fn paint_text(lines: &Vec<String>) -> Element<'static, Message> {
     for line in lines {
         column = column.push(text(line))
     }
-    container(column)
+    scrollable(
+        container(
+            column
+        )
+    )
         .height(250)
         .width(300)
         .into()
+
 }
 
 
